@@ -1,36 +1,25 @@
-import util
+import argparse
+import os, io
+import threading
 
-(in_folder, in_folder_list) = util.create_folder_hash_disctionary('/home/magistone/in')
-(out_folder, out_folder_list)  = util.create_folder_hash_disctionary('/home/magistone/out')
+parser = argparse.ArgumentParser(prog="Veeam_backup_solution", 
+                                description="Synchronizes 2 forders from src to dst with a given interval and logs the actions to std out and a specified file",
+                                )
 
-print(in_folder_list)
-print(out_folder_list)
+parser.add_argument('in_folder', help='Source folder which\'s content is synchronized')
+parser.add_argument('out_folder', help='Target folder which contents will be replaced to be identical to in_folder')
+parser.add_argument('period', help='How often to perform synchronization in minutes', type=int)
+parser.add_argument('log_file', help='Path to file where to write logs')
 
-matched = list()
-overwrite = list()
+args = parser.parse_args()
+print(args.in_folder, args.out_folder, args.period, args.log_file)
 
-keys = list(in_folder.keys())
+if not os.path.exists(args.in_folder):
+    print(f'Source folder ({args.in_folder}) does not exist')
+    exit(1)
 
-for k in keys:
-    if(out_folder.get(k)):
-        #File exists in out, must check hash
-        if (out_folder.get(k) == in_folder.get(k)):
-            #MATCH
-            matched.append(k)    
-        else:
-            # Must overwrite, different version
-            overwrite.append(k)
-        del out_folder[k]
-        del in_folder[k]
-    else:
-        #File does not exists in out, must copy
-        pass
-print("----FILES----")
-print(f"TO BE COPIED: {in_folder.keys()}")
-print(f"TO BE DELETED: {out_folder.keys()}")
-print(f"MATCHED, do nothing: {matched}")
-print(f"OVERWRITE: {overwrite}")
+if not os.path.exists(args.out_folder):
+    print(f"{args.out_folder} does not exist, creating...")
+    os.makedirs(args.out_folder)
 
-to_delete = out_folder_list - in_folder_list
-print("----DIRS----")
-print(f"DANGLING FOLDERS TO DELETE: {to_delete}")
+logfile = io.open(args.log_file, mode="+at")
