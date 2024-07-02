@@ -1,6 +1,6 @@
 import util
 import io
-import datetime 
+import datetime, time 
 import shutil, os
 
 class Synchronizer:
@@ -121,6 +121,15 @@ class Synchronizer:
         self.log_file.write(f"{msg}\n")
 
 def runSynchronization(src: str, dst: str, period: int, log: io.TextIOWrapper):
-    # TODO: timings (repeat every period)
+    """
+    Synchronizes the content of the 'dst' directory to be identical to the 'src' directory every 'period' seconds
+    """
     tmp = Synchronizer(src, dst, log)
-    tmp.sync()
+    while(True):
+        before = time.time()
+        tmp.sync()
+        after = time.time()
+        seconds_taken = after - before
+        if period - seconds_taken > 0:
+            time.sleep(period - seconds_taken)
+
