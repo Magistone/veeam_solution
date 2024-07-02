@@ -1,0 +1,8 @@
+Jul 02, 2024 16:22:35 - DELETE ./test_files/out_test/peepee/hi.bin File does not exist in the source directory
+Jul 02, 2024 16:22:35 - DELETE ./test_files/out_test/hello/filez File does not exist in the source directory
+Jul 02, 2024 16:22:35 - DELETE ./test_files/out_test/peepee/QQ Directory does not exist in the source directory
+Jul 02, 2024 16:22:35 - DELETE ./test_files/out_test/peepee Directory does not exist in the source directory
+Jul 02, 2024 16:22:35 - COPY ./test_files/in/otherfile File does not exist in the output directory
+Jul 02, 2024 16:22:35 - COPY ./test_files/in/hello/pp File does not exist in the output directory
+Jul 02, 2024 16:22:35 - COPY ./test_files/in/pp File exists, hash mismatch
+Jul 02, 2024 16:22:35 - SKIP ./test_files/in/somefile File exists with matching hash
